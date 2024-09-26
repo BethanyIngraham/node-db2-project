@@ -18,7 +18,7 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.get('/:id', checkCarId, async (req, res, next) => {
+router.get('/:id', checkCarId, (req, res, next) => {
     try {
         res.json(req.car);
     } catch(err) {
@@ -31,7 +31,20 @@ router.post('/',
     checkVinNumberUnique, 
     checkVinNumberValid,  
     async (req, res, next) => {
-    res.json('creating new car')
+    try {
+        const {vin, make, model, mileage, title, transmission} = req.body;
+        const createdCar = await Cars.create({
+            vin: vin,
+            make: make,
+            model: model,
+            mileage: mileage, 
+            title: title,
+            transmission: transmission
+        }); 
+        res.status(201).json(createdCar);
+    }catch(err) {
+        next(err);
+    }
 });
 
 router.use((err, req, res, next) => { // eslint-disable-line
