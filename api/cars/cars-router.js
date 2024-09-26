@@ -26,8 +26,12 @@ router.get('/:id', checkCarId, async (req, res, next) => {
     }
 });
 
-router.post('/', async (req, res, next) => {
-   res.json('creating new car')
+router.post('/', 
+    checkCarPayload, 
+    checkVinNumberUnique, 
+    checkVinNumberValid,  
+    async (req, res, next) => {
+    res.json('creating new car')
 });
 
 router.use((err, req, res, next) => { // eslint-disable-line
